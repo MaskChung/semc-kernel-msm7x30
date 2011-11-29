@@ -4394,6 +4394,18 @@ static uint32_t msm_sdcc_setup_power(struct device *dv, unsigned int vdd)
 	return rc;
 }
 
+static uint32_t wifi_power(struct device *dv, unsigned int vdd)
+{
+	int rc = 0;
+	rc = msm_sdcc_setup_power(dv,vdd);
+	if (vdd)
+		gpio_set_value(57, 1);
+	else
+		gpio_set_value(57, 0);
+
+	return rc;
+}
+
 static unsigned int msm7x30_sdcc_slot_status(struct device *dev)
 {
 	return (unsigned int)
@@ -4403,7 +4415,7 @@ static unsigned int msm7x30_sdcc_slot_status(struct device *dev)
 
 static struct mmc_platform_data msm7x30_sdc3_data = {
 	.ocr_mask = MMC_VDD_27_28 | MMC_VDD_28_29,
-	.translate_vdd = msm_sdcc_setup_power,
+	.translate_vdd = wifi_power,
 	.mmc_bus_width = MMC_CAP_4_BIT_DATA,
 	.sdiowakeup_irq = MSM_GPIO_TO_INT(118),
 	.msmsdcc_fmin = 144000,
@@ -4427,7 +4439,6 @@ static struct mmc_platform_data msm7x30_sdc4_data = {
 
 static void __init msm7x30_init_mmc(void)
 {
-	msm_device_sdc3.name = "TIWLAN_SDIO";
 	msm_add_sdcc(3, &msm7x30_sdc3_data);
 
 	msm_add_sdcc(4, &msm7x30_sdc4_data);
