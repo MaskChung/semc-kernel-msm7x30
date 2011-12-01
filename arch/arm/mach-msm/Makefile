@@ -206,3 +206,6 @@ endif
 obj-$(CONFIG_PMIC_TIME) += pmic_time.o
 
 obj-$(CONFIG_SEMC_MOGAMI_FELICA_SUPPORT) += semc_mogami_felica.o
+
+obj-$(CONFIG_WL12XX_PLATFORM_DATA) += wl12xx_platform_data.o
+
